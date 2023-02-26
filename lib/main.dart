@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../config/locator.dart';
-import '../blocs/blocs.dart';
-import '../services/services.dart';
-import '../pages/pages.dart';
+import 'package:gamesforall_frontend/pages/home_page.dart';
+import 'package:gamesforall_frontend/pages/login_page.dart';
+import 'package:gamesforall_frontend/repositories/favorite_repository.dart';
+import 'package:gamesforall_frontend/repositories/product_repository.dart';
+import 'package:gamesforall_frontend/services/authentication_service.dart';
+
+import 'blocs/authentication/authentication_bloc.dart';
+import 'blocs/authentication/authentication_event.dart';
+import 'blocs/authentication/authentication_state.dart';
+import 'config/locator.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -38,13 +44,6 @@ class MyApp extends StatelessWidget {
       authBloc..add(SessionExpiredEvent());
       return _instance;
     });
-    /*return MaterialPageRoute<void>(builder: (context) {
-      return BlocProvider<AuthenticationBloc>(create: (context) {
-        final authService = getIt<JwtAuthenticationService>();
-        return AuthenticationBloc(authService)..add(SessionExpiredEvent());
-      }, 
-      child: MyApp(),);
-    });*/
   }
 
   MyApp() {
@@ -65,8 +64,9 @@ class MyApp extends StatelessWidget {
           if (state is AuthenticationAuthenticated) {
             // show home page
             return HomePage(
-              user: state.user,
-            );
+                user: state.user,
+                productRepository: ProductRepository(),
+                favoriteRepository: FavoriteRepository());
           }
           // otherwise show login page
           return LoginPage();
