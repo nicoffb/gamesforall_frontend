@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:gamesforall_frontend/pages/home_page.dart';
-import 'package:gamesforall_frontend/pages/login_page%20copy.dart';
+import 'package:gamesforall_frontend/pages/login_page.dart';
 
 import 'package:gamesforall_frontend/pages/register_bloc.dart';
 
@@ -36,7 +35,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
             child: Scaffold(
-              backgroundColor: Colors.red.shade700,
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 title: const Text('Registro'),
@@ -62,8 +60,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     physics: const ClampingScrollPhysics(),
                     stepsBuilder: (formBloc) {
                       return [
-                        //_registerTypeStep(formBloc!),
-                        // _personalStep(formBloc),
+                        _personalStep(formBloc!),
                       ];
                     },
                   ),
@@ -86,7 +83,7 @@ class _RegisterFormState extends State<RegisterForm> {
             textFieldBloc: registerFormBloc.username,
             keyboardType: TextInputType.name,
             decoration: const InputDecoration(
-              labelText: 'Username',
+              labelText: 'Nombre de usuario',
               prefixIcon: Icon(Icons.person),
             ),
           ),
@@ -113,7 +110,7 @@ class _RegisterFormState extends State<RegisterForm> {
             textFieldBloc: registerFormBloc.email,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
-              labelText: 'email',
+              labelText: 'E-mail',
               prefixIcon: Icon(Icons.email),
             ),
           ),

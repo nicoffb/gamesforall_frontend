@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-
 import '../config/locator.dart';
 import '../services/authentication_service.dart';
 
 class RegisterFormBloc extends FormBloc<String, String> {
-  final registerAsOwner = BooleanFieldBloc();
   late final AuthenticationService _authenticationService;
 
   final username = TextFieldBloc(
@@ -38,10 +34,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
     _authenticationService = getIt<JwtAuthenticationService>();
     addFieldBlocs(
       step: 0,
-      fieldBlocs: [registerAsOwner],
-    );
-    addFieldBlocs(
-      step: 1,
       fieldBlocs: [username, password, verifyPassword, email],
     );
   }
@@ -49,8 +41,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
   @override
   void onSubmitting() async {
     if (state.currentStep == 0) {
-      emitSuccess();
-    } else if (state.currentStep == 1) {
       if (password.value != verifyPassword.value) {
         verifyPassword.addFieldError("Las contraseñas no coinciden");
         emitFailure();
