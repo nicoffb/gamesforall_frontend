@@ -1,9 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/material.dart';
-import '../config/locator.dart';
-import '../main.dart';
 import '../services/localstorage_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_interceptor/http_interceptor.dart';
@@ -13,6 +9,20 @@ import 'package:http/http.dart' as http;
 class ApiConstants {
   static String baseUrl = "http://localhost:8080";
   //RUTA API
+}
+
+class LoggingInterceptor implements InterceptorContract {
+  @override
+  Future<RequestData> interceptRequest({required RequestData data}) async {
+    print(data.toString());
+    return data;
+  }
+
+  @override
+  Future<ResponseData> interceptResponse({required ResponseData data}) async {
+    print(data.toString());
+    return data;
+  }
 }
 
 class HeadersApiInterceptor implements InterceptorContract {
@@ -35,12 +45,14 @@ class HeadersApiInterceptor implements InterceptorContract {
 @Order(-10)
 @singleton
 class RestClient {
-  var _httpClient;
-  InterceptedClient? _httpClient2 = null;
+  InterceptedClient? _httpClient = null;
 
   RestClient() {
-    _httpClient =
-        InterceptedClient.build(interceptors: [HeadersApiInterceptor()]);
+    _httpClient = InterceptedClient.build(interceptors: [
+      HeadersApiInterceptor(),
+      AuthorizationInterceptor(),
+      LoggingInterceptor()
+    ]);
   }
 
   RestClient.withInterceptors(List<InterceptorContract> interceptors) {
@@ -57,7 +69,7 @@ class RestClient {
     try {
       Uri uri = Uri.parse(ApiConstants.baseUrl + url);
 
-      final response = await _httpClient.get(uri);
+      final response = await _httpClient!.get(uri);
       var responseJson = _response(response);
       return responseJson;
     } on SocketException catch (ex) {
@@ -69,7 +81,7 @@ class RestClient {
     try {
       Uri uri = Uri.parse(ApiConstants.baseUrl + url);
 
-      final response = await _httpClient.post(uri, body: jsonEncode(body));
+      final response = await _httpClient!.post(uri, body: jsonEncode(body));
       var responseJson = _response(response);
       return responseJson;
 
@@ -119,7 +131,7 @@ class RestClient {
       headers.addAll({"Content-Type": 'application/json'});
 
       final response =
-          await _httpClient.put(uri, body: jsonEncode(body), headers: headers);
+          await _httpClient!.put(uri, body: jsonEncode(body), headers: headers);
       var responseJson = _response(response);
       return responseJson;
     } on SocketException catch (ex) {
@@ -193,8 +205,10 @@ class AuthorizationInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
-      var token = await _localStorageService.getFromDisk("user_token");
-      data.headers["Authorization"] = "Bearer " + token;
+      String? loggedUser = _localStorageService.getFromDisk("user_token");
+      if (loggedUser != null) {
+        data.headers["Authorization"] = "Bearer " + loggedUser;
+      }
     } catch (e) {
       print(e);
     }
@@ -205,9 +219,7 @@ class AuthorizationInterceptor implements InterceptorContract {
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
     if (data.statusCode == 401 || data.statusCode == 403) {
-      Future.delayed(Duration(seconds: 1), () {
-        Navigator.of(GlobalContext.ctx).push<void>(MyApp.route());
-      });
+      Future.delayed(Duration(seconds: 1), () {});
     }
 
     return Future.value(data);
