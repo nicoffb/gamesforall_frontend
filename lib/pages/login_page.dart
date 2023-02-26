@@ -14,59 +14,65 @@ class LoginPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(height: 50.0),
-          Text(
-            'GamesForAll',
-            style: TextStyle(
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(9, 148, 136, 1)),
-            textAlign: TextAlign.center,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 50.0),
+              Text(
+                'GamesForAll',
+                style: TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(9, 148, 136, 1)),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                'Cualquier juego, al alcance de cualquiera.',
+                style: TextStyle(
+                    fontSize: 18.0, color: Color.fromRGBO(9, 148, 136, 1)),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          SizedBox(height: 10.0),
-          Text(
-            'Cualquier juego, al alcance de cualquiera.',
-            style: TextStyle(
-                fontSize: 18.0, color: Color.fromRGBO(9, 148, 136, 1)),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 10.0),
-          SafeArea(
-            minimum: const EdgeInsets.all(16),
-            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              builder: (context, state) {
-                final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-                if (state is AuthenticationNotAuthenticated) {
-                  return _AuthForm();
-                }
-                if (state is AuthenticationFailure ||
-                    state is SessionExpiredState) {
-                  var msg = (state as AuthenticationFailure).message;
+          Expanded(
+            child: SafeArea(
+              minimum: const EdgeInsets.all(16),
+              child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, state) {
+                  final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+                  if (state is AuthenticationNotAuthenticated) {
+                    return _AuthForm();
+                  }
+                  if (state is AuthenticationFailure ||
+                      state is SessionExpiredState) {
+                    var msg = (state as AuthenticationFailure).message;
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(msg),
+                        TextButton(
+                          //textColor: Theme.of(context).primaryColor,
+                          child: Text('Retry'),
+                          onPressed: () {
+                            authBloc.add(AppLoaded());
+                          },
+                        )
+                      ],
+                    ));
+                  }
+                  // return splash screen
                   return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(msg),
-                      TextButton(
-                        //textColor: Theme.of(context).primaryColor,
-                        child: Text('Retry'),
-                        onPressed: () {
-                          authBloc.add(AppLoaded());
-                        },
-                      )
-                    ],
-                  ));
-                }
-                // return splash screen
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                );
-              },
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
