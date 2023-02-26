@@ -47,3 +47,22 @@ class UserResponse extends User {
     return data;
   }
 }
+
+class UserRequest {
+  String? username;
+  String? password;
+
+  UserRequest({this.username, this.password});
+
+  UserRequest.fromJson(Map<String, dynamic> json) {
+    username = json['username'];
+    password = json['password'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['username'] = this.username;
+    data['password'] = this.password;
+    return data;
+  }
+}

@@ -16,8 +16,7 @@ abstract class AuthenticationService {
   Future<User?> getCurrentUser();
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<void> signOut();
-  Future<RegisterResponse> registerUser(
-      String username, String password, String verifyPassword, String email);
+  Future<UserResponse> registerUser(String username, String password);
   Future<void> changePassWord(ChangePasswordRequest changePasswordRequest);
   Future<void> deleteAccount();
 }
@@ -68,10 +67,9 @@ class JwtAuthenticationService extends AuthenticationService {
   //NUEVOS  METODOS
 
   @override
-  Future<RegisterResponse> registerUser(String username, String password,
-      String verifyPassword, String email) async {
-    RegisterResponse response = await _authenticationRepository.registerUser(
-        username, password, verifyPassword, email);
+  Future<UserResponse> registerUser(String username, String password) async {
+    UserResponse response =
+        await _authenticationRepository.registerUser(username, password);
     return response;
   }
 

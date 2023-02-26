@@ -33,28 +33,22 @@ class RegisterFormBloc extends FormBloc<String, String> {
   RegisterFormBloc() {
     _authenticationService = getIt<JwtAuthenticationService>();
     addFieldBlocs(
-      step: 0,
       fieldBlocs: [username, password, verifyPassword, email],
     );
   }
 
   @override
   void onSubmitting() async {
-    if (state.currentStep == 0) {
-      if (password.value != verifyPassword.value) {
-        verifyPassword.addFieldError("Las contraseñas no coinciden");
+    if (password.value != verifyPassword.value) {
+      verifyPassword.addFieldError("Las contraseñas no coinciden");
+      emitFailure();
+    } else {
+      try {
+        final result = await _authenticationService.registerUser(
+            username.value, password.value);
+        emitSuccess();
+      } on Exception catch (e) {
         emitFailure();
-      } else {
-        try {
-          final result = await _authenticationService.registerUser(
-              username.value,
-              password.value,
-              verifyPassword.value,
-              email.value);
-          emitSuccess();
-        } on Exception catch (e) {
-          emitFailure();
-        }
       }
     }
   }
