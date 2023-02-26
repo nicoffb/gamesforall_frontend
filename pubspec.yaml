@@ -12,6 +12,7 @@ environment:
 dependencies:
   bloc: ^8.1.1
   flutter_bloc: ^8.1.1
+  flutter_form_bloc: ^0.30.1
   equatable: ^2.0.5
   http: ^0.13.5
   get_it: ^7.2.0

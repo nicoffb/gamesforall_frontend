@@ -2,6 +2,8 @@ import 'dart:convert';
 //import 'dart:developer';
 
 import '../config/locator.dart';
+import '../models/change_password.dart';
+import '../models/register_model.dart';
 import '../services/localstorage_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -14,6 +16,10 @@ abstract class AuthenticationService {
   Future<User?> getCurrentUser();
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<void> signOut();
+  Future<RegisterResponse> registerUser(
+      String username, String password, String verifyPassword, String email);
+  Future<void> changePassWord(ChangePasswordRequest changePasswordRequest);
+  Future<void> deleteAccount();
 }
 
 @Order(2)
@@ -57,5 +63,28 @@ class JwtAuthenticationService extends AuthenticationService {
   Future<void> signOut() async {
     print("borrando token");
     await _localStorageService.deleteFromDisk("user_token");
+  }
+
+  //NUEVOS  METODOS
+
+  @override
+  Future<RegisterResponse> registerUser(String username, String password,
+      String verifyPassword, String email) async {
+    RegisterResponse response = await _authenticationRepository.registerUser(
+        username, password, verifyPassword, email);
+    return response;
+  }
+
+  @override
+  Future<LoginResponse> changePassWord(
+      ChangePasswordRequest changePasswordRequest) async {
+    LoginResponse response =
+        await _authenticationRepository.changePassword(changePasswordRequest);
+    return response;
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    await _authenticationRepository.deleteAccount();
   }
 }

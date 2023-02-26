@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamesforall_frontend/pages/register_page.dart';
 import '../config/locator.dart';
 import '../blocs/blocs.dart';
 import '../services/services.dart';
@@ -249,7 +250,31 @@ class __SignInFormState extends State<_SignInForm> {
                         Text('¿No tienes cuenta?'),
                         const SizedBox(width: 8.0),
                         TextButton(
-                          onPressed: () {},
+                          // onPressed: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => RegistrationPage()),
+                          //   );
+                          //},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 500),
+                                pageBuilder: (_, __, ___) => RegisterForm(),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                           child: Text('Regístrate'),
                         ),
                       ],

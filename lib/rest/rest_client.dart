@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 class ApiConstants {
   static String baseUrl = "http://localhost:8080";
-  //static String baseUrl = "http://10.0.2.2:8080";
+  //RUTA API
 }
 
 class HeadersApiInterceptor implements InterceptorContract {
@@ -36,6 +36,7 @@ class HeadersApiInterceptor implements InterceptorContract {
 @singleton
 class RestClient {
   var _httpClient;
+  InterceptedClient? _httpClient2 = null;
 
   RestClient() {
     _httpClient =
@@ -108,6 +109,35 @@ class RestClient {
             'Error occurred while Communication with Server with StatusCode : ${response.statusCode}');
     }
   }
+
+  //CAMBIAR DE CONTRASEÑA
+  Future<dynamic> put(String url, dynamic body) async {
+    try {
+      Uri uri = Uri.parse(ApiConstants.baseUrl + url);
+
+      Map<String, String> headers = Map();
+      headers.addAll({"Content-Type": 'application/json'});
+
+      final response =
+          await _httpClient.put(uri, body: jsonEncode(body), headers: headers);
+      var responseJson = _response(response);
+      return responseJson;
+    } on SocketException catch (ex) {
+      throw Exception('No internet connection: ${ex.message}');
+    }
+  }
+
+  Future<dynamic> delete(String url) async {
+    try {
+      Uri uri = Uri.parse(ApiConstants.baseUrl + url);
+
+      final response = await _httpClient!.delete(uri);
+      var responseJson = _response(response);
+      return responseJson;
+    } on SocketException catch (ex) {
+      throw Exception('No internet connection: ${ex.message}');
+    }
+  }
 }
 
 // ignore_for_file: prefer_typing_uninitialized_variables
@@ -144,6 +174,12 @@ class NotFoundException extends CustomException {
   NotFoundException([message]) : super(message, "");
 }
 
+//
+//
+//
+//
+//
+//
 class AuthorizationInterceptor implements InterceptorContract {
   late LocalStorageService _localStorageService;
 
