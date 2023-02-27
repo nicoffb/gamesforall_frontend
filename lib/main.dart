@@ -13,15 +13,11 @@ import 'blocs/authentication/authentication_state.dart';
 import 'config/locator.dart';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await SharedPreferences.getInstance();
   setupAsyncDependencies();
   configureDependencies();
-  //await getIt.allReady();
 
   runApp(BlocProvider<AuthenticationBloc>(
     create: (context) {
-      //GlobalContext.ctx = context;
       final authService = getIt<JwtAuthenticationService>();
       return AuthenticationBloc(authService)..add(AppLoaded());
     },
@@ -64,7 +60,8 @@ class MyApp extends StatelessWidget {
           GlobalContext.ctx = context;
           if (state is AuthenticationAuthenticated) {
             // show home page
-            return MainPage(user: state.user);
+            //return MainPage(user: state.user);
+            return LoginPage();
           }
           // otherwise show login page
           return LoginPage();
