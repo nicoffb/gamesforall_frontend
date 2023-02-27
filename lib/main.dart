@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamesforall_frontend/pages/home_page.dart';
 import 'package:gamesforall_frontend/pages/login_page.dart';
+import 'package:gamesforall_frontend/pages/main_page.dart';
 import 'package:gamesforall_frontend/repositories/favorite_repository.dart';
 import 'package:gamesforall_frontend/repositories/product_repository.dart';
 import 'package:gamesforall_frontend/services/authentication_service.dart';
@@ -63,10 +64,7 @@ class MyApp extends StatelessWidget {
           GlobalContext.ctx = context;
           if (state is AuthenticationAuthenticated) {
             // show home page
-            return HomePage(
-                user: state.user,
-                productRepository: ProductRepository(),
-                favoriteRepository: FavoriteRepository());
+            return MainPage(user: state.user);
           }
           // otherwise show login page
           return LoginPage();

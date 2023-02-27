@@ -5,17 +5,17 @@ enum ProductStatus { initial, success, failure }
 class ProductState extends Equatable {
   const ProductState({
     this.status = ProductStatus.initial,
-    this.products = const <Product>[],
+    this.products = const <ProductResponse>[],
     this.hasReachedMax = false,
   });
 
   final ProductStatus status;
-  final List<Product> products;
+  final List<ProductResponse> products;
   final bool hasReachedMax;
 
   ProductState copyWith({
     ProductStatus? status,
-    List<Product>? products,
+    List<ProductResponse>? products,
     bool? hasReachedMax,
   }) {
     return ProductState(

@@ -1,24 +1,26 @@
-class Page {
-  List<Product>? product;
+import 'package:gamesforall_frontend/models/product_response.dart';
+
+class ProductPageResponse {
+  List<ProductResponse>? content;
   bool? last;
   bool? first;
   int? totalPages;
   int? totalElements;
   int? currentPage;
 
-  Page(
-      {this.product,
+  ProductPageResponse(
+      {this.content,
       this.last,
       this.first,
       this.totalPages,
       this.totalElements,
       this.currentPage});
 
-  Page.fromJson(Map<String, dynamic> json) {
+  ProductPageResponse.fromJson(Map<String, dynamic> json) {
     if (json['content'] != null) {
-      product = <Product>[];
+      content = <ProductResponse>[];
       json['content'].forEach((v) {
-        product!.add(new Product.fromJson(v));
+        content!.add(new ProductResponse.fromJson(v));
       });
     }
     last = json['last'];
@@ -30,8 +32,8 @@ class Page {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.product != null) {
-      data['product'] = this.product!.map((v) => v.toJson()).toList();
+    if (this.content != null) {
+      data['content'] = this.content!.map((v) => v.toJson()).toList();
     }
     data['last'] = this.last;
     data['first'] = this.first;

@@ -4,27 +4,26 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 
-import '../models/page.dart';
+import '../models/product_page_response.dart';
 import '../rest/rest_client.dart';
 
 const _postLimit = 20;
 
 @singleton
 class ProductRepository {
-  late RestClient server;
+  late RestAuthenticatedClient server;
   ProductRepository() {
-    server = GetIt.I.get<RestClient>();
-  }
-  Stream<List<Product>> fetchProductsStream() async* {
-    final response = await server.get("/product/search");
-    final page = Page.fromJson(json.decode(response));
-    yield page.product!;
+    server = GetIt.I.get<RestAuthenticatedClient>();
   }
 
-  Future<Page> fetchProducts([int startIndex = 0]) async {
-    final response = await server.get("/product/search");
+  Future<ProductPageResponse> getProductList(int page) async {
+    String url = '/product/search/?page=$page';
 
-    return Page.fromJson(json.decode(response));
+    var jsonResponse = await server.get(url);
+    ProductPageResponse pagedProducts =
+        ProductPageResponse.fromJson(jsonDecode(jsonResponse));
+
+    return pagedProducts;
   }
 }
 

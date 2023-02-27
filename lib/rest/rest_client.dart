@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import '../blocs/games_for_all_app.dart';
 import '../services/localstorage_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/widgets.dart';
 
 class ApiConstants {
   static String baseUrl = "http://localhost:8080";
@@ -205,10 +207,8 @@ class AuthorizationInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
-      String? loggedUser = _localStorageService.getFromDisk("user_token");
-      if (loggedUser != null) {
-        data.headers["Authorization"] = "Bearer " + loggedUser;
-      }
+      var token = await _localStorageService.getFromDisk("user_token");
+      data.headers["Authorization"] = "Bearer " + token;
     } catch (e) {
       print(e);
     }

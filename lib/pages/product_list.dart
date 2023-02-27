@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/favorites.dart';
-import '../models/page.dart';
+import '../models/product_page_response.dart';
 
 class ProductList extends StatelessWidget {
   final Stream<List<dynamic>> stream;
