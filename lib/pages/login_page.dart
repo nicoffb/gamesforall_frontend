@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamesforall_frontend/pages/main_page.dart';
 import 'package:gamesforall_frontend/pages/register_page.dart';
 import '../config/locator.dart';
 import '../blocs/blocs.dart';
@@ -58,13 +59,15 @@ class LoginPage extends StatelessWidget {
                           //textColor: Theme.of(context).primaryColor,
                           child: Text('Retry'),
                           onPressed: () {
-                            authBloc.add(AppLoaded());
+                            authBloc.add(UserLoggedOut());
                           },
                         )
                       ],
                     ));
                   }
-                  // return splash screen
+                  if (state is AuthenticationAuthenticated) {
+                    return MainPage(user: state.user);
+                  }
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 2,

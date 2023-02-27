@@ -32,7 +32,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (user != null) {
         _authenticationBloc.add(UserLoggedIn(user: user));
         emit(LoginSuccess());
-        emit(LoginInitial());
       } else {
         emit(LoginFailure(error: 'Something very weird just happened'));
       }
