@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
             ),
             child: Center(
               child: Text(
-                'VIDEOJUEGOS EN VENTA',
+                'GAMESFORALL',
                 style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
@@ -125,8 +125,10 @@ class _HomePage extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final productRepo = new ProductRepository();
-        return ProductBloc(productRepository: productRepo)
-          ..add(GetProductsEvent());
+        return ProductBloc(
+          productRepository: productRepo,
+          productType: ProductType.search,
+        )..add(GetProductsEvent());
       },
       child: const ProductList(),
     );
@@ -186,9 +188,10 @@ class _FavoritePage extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final productRepo = new ProductRepository();
-        return ProductBloc(productRepository: productRepo)
-          ..add(GetProductsEvent(
-              isFavorites: true)); // Agrega el parámetro `isFavorites`
+        return ProductBloc(
+          productRepository: productRepo,
+          productType: ProductType.favorites,
+        )..add(GetProductsEvent());
       },
       child: Scaffold(
         appBar: AppBar(
@@ -210,8 +213,10 @@ class _MyProducts extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final productRepo = new ProductRepository();
-        return ProductBloc(productRepository: productRepo)
-          ..add(GetProductsEvent());
+        return ProductBloc(
+          productRepository: productRepo,
+          productType: ProductType.myproducts,
+        )..add(GetProductsEvent());
       },
       child: Scaffold(
         appBar: AppBar(

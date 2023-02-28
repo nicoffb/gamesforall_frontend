@@ -26,8 +26,10 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository productRepository;
   int numPage = 0;
+  final ProductType productType;
 
-  ProductBloc({required this.productRepository}) : super(const ProductState()) {
+  ProductBloc({required this.productRepository, required this.productType})
+      : super(const ProductState()) {
     on<GetProductsEvent>(
       _onGetProductsEvent,
       transformer: throttleDroppable(throttleDuration),
@@ -41,7 +43,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
     try {
       if (state.status == ProductStatus.initial) {
-        final productPage = await productRepository.getProductList(0);
+        final productPage =
+            await productRepository.getProductList(0, productType: productType);
         return emit(state.copyWith(
           status: ProductStatus.success,
           products: productPage.content,
@@ -50,7 +53,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
 
       numPage++;
-      final productPage = await productRepository.getProductList(numPage);
+      final productPage = await productRepository.getProductList(numPage,
+          productType: productType);
       productPage.content!.length < 10 || productPage.content!.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(

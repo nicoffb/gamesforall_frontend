@@ -112,7 +112,7 @@ class RestClient {
 
         // Así devolvemos un mensaje "genérico"
         throw AuthenticationException(
-            "You have entered an invalid username or password");
+            "Su sesión ha expirado. Por favor, vuelva a iniciar sesión.");
       case 403:
         throw UnauthorizedException(utf8.decode(response.bodyBytes));
       case 404:
@@ -229,6 +229,8 @@ class AuthorizationInterceptor implements InterceptorContract {
 @Order(-10)
 @singleton
 class RestAuthenticatedClient extends RestClient {
+  var httpClient;
+
   RestAuthenticatedClient()
       : super.withInterceptors(
             List.of(<InterceptorContract>[AuthorizationInterceptor()]));

@@ -1,3 +1,4 @@
+import 'package:gamesforall_frontend/blocs/productList/product_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,11 +18,22 @@ class ProductRepository {
   }
 
   Future<ProductPageResponse> getProductList(int page,
-      {bool isFavorites = false}) async {
-    String url =
-        isFavorites ? '/favorites/?page=$page' : '/product/search/?page=$page';
+      {ProductType productType = ProductType.search}) async {
+    String urlString;
 
-    var jsonResponse = await server.get(url);
+    switch (productType) {
+      case ProductType.search:
+        urlString = '/product/search/?page=$page';
+        break;
+      case ProductType.favorites:
+        urlString = '/favorites/?page=$page';
+        break;
+      case ProductType.myproducts:
+        urlString = '/myproducts/?page=$page';
+        break;
+    }
+
+    var jsonResponse = await server.get(urlString);
     ProductPageResponse pagedProducts =
         ProductPageResponse.fromJson(jsonDecode(jsonResponse));
 
