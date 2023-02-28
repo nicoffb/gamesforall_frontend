@@ -24,7 +24,7 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) async {
     //LOGOUT
-    _authenticationService.signOut();
+    //_authenticationService.signOut();
     emit(AuthenticationLoading());
     try {
       await Future.delayed(Duration(milliseconds: 500)); // a simulated delay

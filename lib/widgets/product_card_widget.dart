@@ -45,7 +45,7 @@ class ProductCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 189, 241, 140),
+                      color: Color.fromARGB(255, 51, 124, 183),
                       shadows: [
                         Shadow(
                           offset: Offset(1.0, 1.0),
@@ -79,7 +79,7 @@ class ProductCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    'Author: ${product.title!}',
+                    '${product.price?.toStringAsFixed(product.price?.truncateToDouble() == product.price ? 0 : 2)} €',
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromARGB(200, 255, 255, 255),

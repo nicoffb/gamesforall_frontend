@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../blocs/authentication/authentication_bloc.dart';
+import '../blocs/authentication/authentication_event.dart';
 import '../blocs/productList/product_bloc.dart';
 import '../models/user.dart';
 import '../repositories/product_repository.dart';
@@ -33,6 +34,7 @@ class _MainPageState extends State<MainPage> {
           minimum: const EdgeInsets.all(2), child: _ProfilePage(user: user)),
       SafeArea(minimum: const EdgeInsets.all(2), child: _SettingsPage())
     ];
+    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,24 +42,24 @@ class _MainPageState extends State<MainPage> {
         toolbarHeight: 50,
         title: ClipRRect(
           child: Container(
-            width: 90,
+            width: 300,
             height: 40,
             decoration: BoxDecoration(
               color: Color.fromARGB(200, 255, 255, 255),
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: BorderRadius.all(Radius.elliptical(30, 30)),
             ),
             child: Center(
               child: Text(
-                'TOFU',
+                'VIDEOJUEGOS EN VENTA',
                 style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: Color.fromARGB(255, 155, 214, 100)),
+                    color: Color.fromARGB(255, 100, 210, 214)),
               ),
             ),
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 155, 214, 100),
+        backgroundColor: Color.fromARGB(255, 51, 124, 183),
         elevation: 2,
       ),
       backgroundColor: Color.fromARGB(255, 230, 230, 230),
@@ -66,9 +68,9 @@ class _MainPageState extends State<MainPage> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Container(
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 155, 214, 100),
+              color: Color.fromARGB(255, 51, 124, 183),
               border: Border.all(
-                color: Color.fromARGB(255, 145, 199, 94),
+                color: Color.fromARGB(255, 51, 124, 183),
                 width: 1,
               ),
               borderRadius: BorderRadius.only(
@@ -78,7 +80,7 @@ class _MainPageState extends State<MainPage> {
             child: GNav(
                 selectedIndex: _selectedIndex,
                 onTabChange: _navigateBottomBar,
-                backgroundColor: Color.fromARGB(255, 155, 214, 100),
+                backgroundColor: Color.fromARGB(255, 51, 124, 183),
                 color: Color.fromARGB(150, 255, 255, 255),
                 activeColor: Colors.white,
                 gap: 10,
@@ -87,13 +89,20 @@ class _MainPageState extends State<MainPage> {
                 tabs: [
                   GButton(
                     icon: Icons.home,
-                    text: 'Home',
+                    text: 'Games',
                   ),
                   GButton(
                     icon: Icons.person,
                     text: 'Profile',
                   ),
-                  GButton(icon: Icons.settings, text: 'Settings')
+                  GButton(icon: Icons.settings, text: 'Settings'),
+                  GButton(
+                    icon: Icons.logout,
+                    text: 'Logout',
+                    onPressed: () {
+                      authBloc.add(UserLoggedOut());
+                    },
+                  )
                 ]),
           ),
         ),
@@ -135,9 +144,9 @@ class _SettingsPage extends StatelessWidget {
         color: Color.fromARGB(255, 223, 94, 77),
         textColor: Colors.white,
         text: 'Logout',
-        // onTap: () {
-        //   authBloc.add(UserLoggedOutEvent());
-        // },
+        onTap: () {
+          authBloc.add(UserLoggedOut());
+        },
       ),
     );
   }
@@ -146,63 +155,26 @@ class _SettingsPage extends StatelessWidget {
 class _ProfilePage extends StatelessWidget {
   _ProfilePage({super.key, required this.user});
   User user;
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 60, left: 10, right: 10),
-      child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 300,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromARGB(60, 0, 0, 0),
-                        blurRadius: 4,
-                        offset: Offset(0, 3))
-                  ]),
-            ),
-            Positioned(
-              top: -58,
-              child: Container(
-                width: 116,
-                height: 116,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                ),
-              ),
-            ),
-            Positioned(
-              top: -50,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    color: Colors.red,
-                    image: DecorationImage(image: NetworkImage('imagen.jpg')),
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    border: Border.all(
-                        style: BorderStyle.solid,
-                        color: Colors.white,
-                        width: 4,
-                        strokeAlign: BorderSide.strokeAlignCenter)),
-              ),
-            ),
-            Text(
-              '${user.fullName}',
-              style: GoogleFonts.montserrat(
-                  color: Colors.grey[600],
-                  fontSize: 23,
-                  fontWeight: FontWeight.w500),
-            ),
-          ]),
+    return BlocProvider(
+      create: (_) {
+        final productRepo = new ProductRepository();
+        return ProductBloc(productRepository: productRepo)
+          ..add(GetProductsEvent());
+      },
+      child: const ProductList(),
     );
   }
 }
+
+// class _LogoutPage extends StatelessWidget {
+//   const _LogoutPage({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+
+//     authBloc.add(UserLoggedOut());
+//   }
+// }
+
