@@ -10,6 +10,10 @@
   String toString() => 'User { name: $name, email: $email}';
 }*/
 
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+
 import '../models/login.dart';
 
 class User {
@@ -48,21 +52,25 @@ class UserResponse extends User {
   }
 }
 
+//REQUEST
 class UserRequest {
-  String? username;
-  String? password;
+  String username;
+  String password;
+  String verifyPassword;
+  String fullName;
 
-  UserRequest({this.username, this.password});
-
-  UserRequest.fromJson(Map<String, dynamic> json) {
-    username = json['username'];
-    password = json['password'];
-  }
+  UserRequest(
+      {required this.username,
+      required this.password,
+      required this.verifyPassword,
+      required this.fullName});
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['password'] = this.password;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
+    data['password'] = password;
+    data['verifyPassword'] = verifyPassword;
+    data['nombre'] = fullName;
     return data;
   }
 }

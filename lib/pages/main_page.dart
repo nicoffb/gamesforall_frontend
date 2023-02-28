@@ -196,7 +196,7 @@ class _ProfilePage extends StatelessWidget {
               ),
             ),
             Text(
-              '${user.username}',
+              '${user.fullName}',
               style: GoogleFonts.montserrat(
                   color: Colors.grey[600],
                   fontSize: 23,

@@ -29,15 +29,18 @@ class AuthenticationRepository {
   }
 
   //NUEVAS FUNCIONES
-  Future<UserResponse> registerUser(String username, String password) async {
+  Future<UserResponse> registerUser(String username, String password,
+      String verifyPassword, String fullName) async {
     String url = "/auth/register";
 
     var jsonResponse = await _client.post(
         url,
         UserRequest(
-          username: username,
-          password: password,
-        ));
+            username: username,
+            password: password,
+            verifyPassword: verifyPassword,
+            fullName: fullName));
+
     return UserResponse.fromJson(jsonDecode(jsonResponse));
   }
 

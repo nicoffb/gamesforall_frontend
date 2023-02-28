@@ -107,11 +107,11 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           TextFieldBlocBuilder(
             textStyle: textBaseStyle,
-            textFieldBloc: registerFormBloc.email,
-            keyboardType: TextInputType.emailAddress,
+            textFieldBloc: registerFormBloc.fullName,
+            keyboardType: TextInputType.name,
             decoration: const InputDecoration(
-              labelText: 'E-mail',
-              prefixIcon: Icon(Icons.email),
+              labelText: 'Nombre completo',
+              prefixIcon: Icon(Icons.person_2_outlined),
             ),
           ),
         ],
