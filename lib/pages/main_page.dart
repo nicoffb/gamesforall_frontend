@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
             width: 300,
             height: 40,
             decoration: BoxDecoration(
-              color: Color.fromARGB(200, 255, 255, 255),
+              color: Color.fromARGB(199, 255, 255, 255),
               borderRadius: BorderRadius.all(Radius.elliptical(30, 30)),
             ),
             child: Center(
@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
                 style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: Color.fromARGB(255, 100, 210, 214)),
+                    color: Color.fromARGB(255, 31, 127, 131)),
               ),
             ),
           ),
@@ -94,8 +94,13 @@ class _MainPageState extends State<MainPage> {
                   GButton(
                     icon: Icons.favorite,
                     text: 'Favorites',
+                    iconColor: Colors.red,
                   ),
-                  GButton(icon: Icons.person, text: 'Profile'),
+                  GButton(
+                    icon: Icons.person,
+                    text: 'Profile',
+                    iconColor: Color.fromARGB(255, 15, 70, 179),
+                  ),
                   GButton(
                     icon: Icons.logout,
                     text: 'Logout',
@@ -135,51 +140,6 @@ class _HomePage extends StatelessWidget {
   }
 }
 
-// class _SettingsPage extends StatelessWidget {
-//   const _SettingsPage({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-//     return Center(
-//       child: CustomButton(
-//         height: 50,
-//         color: Color.fromARGB(255, 223, 94, 77),
-//         textColor: Colors.white,
-//         text: 'Logout',
-//         onTap: () {
-//           authBloc.add(UserLoggedOut());
-//         },
-//       ),
-//     );
-//   }
-// }
-
-// class _FavoritePage extends StatelessWidget {
-//   _FavoritePage({super.key, required this.user});
-//   User user;
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (_) {
-//         final productRepo = new ProductRepository();
-//         return ProductBloc(productRepository: productRepo)
-//           ..add(GetProductsEvent());
-//       },
-//       child: const ProductList(),
-//     );
-//   }
-// }
-
-// class _LogoutPage extends StatelessWidget {
-//   const _LogoutPage({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-
-//     authBloc.add(UserLoggedOut());
-//   }
-// }
-
 class _FavoritePage extends StatelessWidget {
   _FavoritePage({super.key, required this.user});
   User user;
@@ -196,10 +156,11 @@ class _FavoritePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 229, 72, 44),
-          title: Text(
+          title: Center(
+              child: Text(
             'Productos favoritos',
             style: TextStyle(color: Colors.white),
-          ),
+          )),
         ),
         body: const ProductList(),
       ),
@@ -221,10 +182,11 @@ class _MyProducts extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 15, 70, 179),
-          title: Text(
+          title: Center(
+              child: Text(
             'Mis productos',
             style: TextStyle(color: Colors.white),
-          ),
+          )),
         ),
         body: const ProductList(),
       ),

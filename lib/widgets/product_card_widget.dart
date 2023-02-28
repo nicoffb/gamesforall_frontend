@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/product_response.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.product});
+  const ProductCard({Key? key, required this.product}) : super(key: key);
+
   final ProductResponse product;
 
   @override
@@ -16,88 +17,97 @@ class ProductCard extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 3.0,
-        child: Container(
-          height: 120,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'http://localhost:8080/product/download/${product.image}'))),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                  // begin: Alignment.topCenter,
-                  // end: Alignment.center,
-                  radius: 2,
-                  colors: [
-                    Color.fromARGB(0, 0, 0, 0),
-                    Color.fromARGB(170, 0, 0, 0),
-                  ]),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    radius: 2,
+                    colors: [
+                      Color.fromARGB(0, 0, 0, 0),
+                      Color.fromARGB(170, 0, 0, 0),
+                    ],
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.title!,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 51, 124, 183),
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 2.0,
+                            color: Color.fromARGB(200, 0, 0, 0),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      product.platform!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 23, 23, 23),
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0.5, 0.5),
+                            blurRadius: 2.0,
+                            color: Color.fromARGB(200, 0, 0, 0),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      '${product.price?.toStringAsFixed(product.price?.truncateToDouble() == product.price ? 0 : 2)} €',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 51, 124, 183),
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 2.0,
+                              color: Color.fromARGB(200, 0, 0, 0),
+                            )
+                          ]),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      '${product.description}',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 2.0,
+                              color: Color.fromARGB(200, 0, 0, 0),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 15, left: 15),
-                  child: Text(
-                    product.title!,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 51, 124, 183),
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 2.0,
-                          color: Color.fromARGB(200, 0, 0, 0),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    product.platform!,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0.5, 0.5),
-                          blurRadius: 2.0,
-                          color: Color.fromARGB(200, 0, 0, 0),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    '${product.price?.toStringAsFixed(product.price?.truncateToDouble() == product.price ? 0 : 2)} €',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color.fromARGB(200, 255, 255, 255),
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 2.0,
-                          color: Color.fromARGB(237, 0, 0, 0),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            Expanded(
+              flex: 3,
+              child: Image.network(
+                'http://localhost:8080/product/download/${product.image}',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
+          ],
         ),
-        margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
       ),
     );
   }

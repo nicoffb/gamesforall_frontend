@@ -47,23 +47,21 @@ class _ProductListState extends State<ProductList> {
               child: Text('There is no products'),
             );
           }
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing:
+                  16.0, // agrega un espacio vertical entre las tarjetas
+              crossAxisSpacing:
+                  16.0, // agrega un espacio horizontal entre las tarjetas
+              childAspectRatio: 1.3, // ajusta el tamaño de las tarjetas
+            ),
             itemBuilder: (BuildContext context, int index) {
-              return index >= state.products.length
-                  ? Column(children: [
-                      SizedBox(
-                        width: 10,
-                        height: 10,
-                      ),
-                      Container(
-                        width: 3,
-                        height: 3,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.all(Radius.circular(3))),
-                      ),
-                    ])
-                  : ProductCard(product: state.products[index]);
+              return Padding(
+                padding: const EdgeInsets.all(
+                    8.0), // agrega un espacio adicional entre la tarjeta y los bordes del contenedor
+                child: ProductCard(product: state.products[index]),
+              );
             },
             itemCount: state.hasReachedMax
                 ? state.products.length
