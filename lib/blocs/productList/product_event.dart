@@ -5,4 +5,9 @@ abstract class ProductEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetProductsEvent extends ProductEvent {}
+class GetProductsEvent extends ProductEvent {
+  final bool isFavorites;
+  GetProductsEvent({this.isFavorites = false});
+  @override
+  List<Object> get props => [isFavorites];
+}

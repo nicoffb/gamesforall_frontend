@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:gamesforall_frontend/pages/login_page.dart';
 
-import 'package:gamesforall_frontend/pages/register_bloc.dart';
+import '../blocs/register_bloc.dart';
 
 const textBaseStyle = TextStyle(color: Colors.white);
 const textDetailStyle =

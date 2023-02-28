@@ -31,8 +31,8 @@ class _MainPageState extends State<MainPage> {
     final List<Widget> _pages = [
       SafeArea(minimum: const EdgeInsets.all(2), child: _HomePage()),
       SafeArea(
-          minimum: const EdgeInsets.all(2), child: _ProfilePage(user: user)),
-      SafeArea(minimum: const EdgeInsets.all(2), child: _SettingsPage())
+          minimum: const EdgeInsets.all(2), child: _FavoritePage(user: user)),
+      SafeArea(minimum: const EdgeInsets.all(2), child: _MyProducts())
     ];
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
@@ -92,10 +92,10 @@ class _MainPageState extends State<MainPage> {
                     text: 'Games',
                   ),
                   GButton(
-                    icon: Icons.person,
-                    text: 'Profile',
+                    icon: Icons.favorite,
+                    text: 'Favorites',
                   ),
-                  GButton(icon: Icons.settings, text: 'Settings'),
+                  GButton(icon: Icons.person, text: 'Profile'),
                   GButton(
                     icon: Icons.logout,
                     text: 'Logout',
@@ -133,40 +133,40 @@ class _HomePage extends StatelessWidget {
   }
 }
 
-class _SettingsPage extends StatelessWidget {
-  const _SettingsPage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-    return Center(
-      child: CustomButton(
-        height: 50,
-        color: Color.fromARGB(255, 223, 94, 77),
-        textColor: Colors.white,
-        text: 'Logout',
-        onTap: () {
-          authBloc.add(UserLoggedOut());
-        },
-      ),
-    );
-  }
-}
+// class _SettingsPage extends StatelessWidget {
+//   const _SettingsPage({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+//     return Center(
+//       child: CustomButton(
+//         height: 50,
+//         color: Color.fromARGB(255, 223, 94, 77),
+//         textColor: Colors.white,
+//         text: 'Logout',
+//         onTap: () {
+//           authBloc.add(UserLoggedOut());
+//         },
+//       ),
+//     );
+//   }
+// }
 
-class _ProfilePage extends StatelessWidget {
-  _ProfilePage({super.key, required this.user});
-  User user;
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) {
-        final productRepo = new ProductRepository();
-        return ProductBloc(productRepository: productRepo)
-          ..add(GetProductsEvent());
-      },
-      child: const ProductList(),
-    );
-  }
-}
+// class _FavoritePage extends StatelessWidget {
+//   _FavoritePage({super.key, required this.user});
+//   User user;
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) {
+//         final productRepo = new ProductRepository();
+//         return ProductBloc(productRepository: productRepo)
+//           ..add(GetProductsEvent());
+//       },
+//       child: const ProductList(),
+//     );
+//   }
+// }
 
 // class _LogoutPage extends StatelessWidget {
 //   const _LogoutPage({super.key});
@@ -178,3 +178,51 @@ class _ProfilePage extends StatelessWidget {
 //   }
 // }
 
+class _FavoritePage extends StatelessWidget {
+  _FavoritePage({super.key, required this.user});
+  User user;
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) {
+        final productRepo = new ProductRepository();
+        return ProductBloc(productRepository: productRepo)
+          ..add(GetProductsEvent(
+              isFavorites: true)); // Agrega el parámetro `isFavorites`
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 229, 72, 44),
+          title: Text(
+            'Productos favoritos',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: const ProductList(),
+      ),
+    );
+  }
+}
+
+class _MyProducts extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) {
+        final productRepo = new ProductRepository();
+        return ProductBloc(productRepository: productRepo)
+          ..add(GetProductsEvent());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 15, 70, 179),
+          title: Text(
+            'Mis productos',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: const ProductList(),
+      ),
+    );
+  }
+}
