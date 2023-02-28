@@ -9,7 +9,6 @@ import '../blocs/authentication/authentication_event.dart';
 import '../blocs/productList/product_bloc.dart';
 import '../models/user.dart';
 import '../repositories/product_repository.dart';
-import '../widgets/custom_button_widget.dart';
 import '../widgets/product_list_widget.dart';
 
 class MainPage extends StatefulWidget {

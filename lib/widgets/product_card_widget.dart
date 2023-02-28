@@ -19,7 +19,7 @@ class ProductCard extends StatelessWidget {
         elevation: 3.0,
         child: Row(
           children: [
-            Expanded(
+            Flexible(
               flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(15),
