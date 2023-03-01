@@ -49,7 +49,7 @@ class _ProductListState extends State<ProductList> {
           }
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 1,
               mainAxisSpacing:
                   16.0, // agrega un espacio vertical entre las tarjetas
               crossAxisSpacing:
@@ -58,9 +58,15 @@ class _ProductListState extends State<ProductList> {
             ),
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.all(
-                    8.0), // agrega un espacio adicional entre la tarjeta y los bordes del contenedor
-                child: ProductCard(product: state.products[index]),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                      // Agregamos Expanded aquí
+                      child: ProductCard(product: state.products[index]),
+                    ),
+                  ],
+                ),
               );
             },
             itemCount: state.hasReachedMax

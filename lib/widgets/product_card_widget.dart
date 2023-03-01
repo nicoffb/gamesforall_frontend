@@ -38,7 +38,7 @@ class ProductCard extends StatelessWidget {
                     Text(
                       product.title!,
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 19,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 51, 124, 183),
                         shadows: [
@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
                     Text(
                       product.platform!,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 23, 23, 23),
                         shadows: [
@@ -70,7 +70,7 @@ class ProductCard extends StatelessWidget {
                     Text(
                       '${product.price?.toStringAsFixed(product.price?.truncateToDouble() == product.price ? 0 : 2)} €',
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 51, 124, 183),
                           shadows: [
